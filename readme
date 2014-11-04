@@ -1,0 +1,35 @@
+*****************************************************************************************************************************
+To run:
+	simply run make from both server's and client's directory
+	./server
+	./client 127.0.0.1
+
+*****************************************************************************************************************************
+FTP:
+	FTP can run in two modes, active or passive. FTP uses two channels between client and server, the command channel and the
+	data channel.The command channel is for commands and responses, the data channel is for actually transferring files.
+	In passive mode, client establishes both channels.
+	We are using Passive mode of FTP.
+	->client opens up command channel from random client port to server port.(ftp-client.cpp, 265)
+	->server sends the port no. of data channel on command channel.(serve.cpp, 79)
+	->client opens up data channel to server on the received port no.(ftp-client.cpp, 281)
+	->server sends the acknowledgement on data channel.(serve.cpp, 91)
+
+*****************************************************************************************************************************
+ftp-server.cpp
+	creates the socket on defined port and starts listening on it.(code-24 to 75)
+	after receiving connection it creates a child process by using fork, copies the file descriptor of command channel to stdin 
+	for simplicity and runs the executable serve which handles further requests from the client.(code-77 to 98)
+
+*****************************************************************************************************************************
+serve.cpp
+	it sets up the data channel and handles the further requests from the client
+
+
+*****************************************************************************************************************************
+ftp-client.cpp
+	establishes the command channel and data channel to server.(code-263 to 308)
+	reads the commands from stdin and handles them accordingly.
+
+
+*****************************************************************************************************************************
